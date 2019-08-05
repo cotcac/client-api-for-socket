@@ -34,9 +34,13 @@ app.io.on('connection', function (socket) {
   console.log('connected');
   //  connections.push(socket);
      // send message
+     console.log("[x]",socket.id);
+  
+     socket.send(socket.id);
+     
      socket.on('send message', function(data){
       console.log(data);
-      app.io.sockets.emit('new message',"hello " + data);
+      app.io.sockets.emit(socket.id + '_new message',"hello " + data);
   });
 });//end socket
 
