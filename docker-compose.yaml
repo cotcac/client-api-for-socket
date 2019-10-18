@@ -1,0 +1,15 @@
+version: '3'
+services:
+  my-socket-ui:
+    build: .
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - "${PORT}:${PORT}"
+    restart: always
+    networks: 
+      - mynet      
+    command: nodemon bin/www
+networks:
+  mynet: 
+    external: true    
