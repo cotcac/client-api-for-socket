@@ -5,23 +5,31 @@ app.controller('myCtrl', function($scope,$http) {
     $scope.firstName= "John";
 
 
-
+    var sessionID ="";
     $scope.submit=function(){
 
         console.log($scope.firstName);
         
         // use http send message to server.
-        $http.get('/users?name='+$scope.firstName).then(res=>{
+        var data = {
+            sessionID,
+            name:$scope.firstName
+        }
+        $http.post('/users?name='+$scope.firstName,data).then(res=>{
             // console.log(res); 
         })
     };
     
       socket.on("connect", function () {
-        const sessionID = socket.id;//CPjCHB6HGFg8r5zDAAAA this is same with the socket.id one on server.
+        sessionID = socket.id;//CPjCHB6HGFg8r5zDAAAA this is same with the socket.id one on server.
         console.log(sessionID);//
-        //get message/ Use the sessionID so different client have different ID
-        socket.on(sessionID + '_new message', function (data) {
-            console.log('[Node server:] ' + data);
+        //Listen to room "new message_"
+        socket.on('new message_', function (data) {
+            console.log('[Node to room:] ' + data);
+        });
+        // Listen to event on channel "new message_[sessionID]"
+        socket.on('new message_' + sessionID, function (data) {
+            console.log('[Node to me only:] ' + data);
         });
     })
 });
