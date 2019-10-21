@@ -14,10 +14,10 @@ app.controller('myCtrl', function($scope,$http) {
         // use http send message to server.
         var data = {
             sessionID,
-            name:$scope.firstName
+            content:$scope.firstName
         }
-        $http.post('/users?name='+$scope.firstName,data).then(res=>{
-            // console.log(res); 
+        $http.post('/users?name='+$scope.firstName,data).catch(e=>{
+            console.log(e);
         })
     };
     
@@ -27,11 +27,11 @@ app.controller('myCtrl', function($scope,$http) {
 
         //Listen to room "new message_"
         socket.on(channel, function (data) {
-            console.log('[Node to room:] ' + data);
+            console.log(`[ ${channel} ]` + data);
         });
         // Listen to event on channel "new message_[sessionID]"
-        socket.on(channel+ sessionID, function (data) {
-            console.log('[Node to me only:] ' + data);
+        socket.on(`${channel} ${sessionID}`, function (data) {
+            console.log(`[ ${channel} ]` + data);
         });
     })
 });

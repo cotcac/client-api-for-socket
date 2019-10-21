@@ -14,7 +14,7 @@ router.post('/', function(req, res, next) {
 
 // send message to everyone in room.
 router.get('/', function(req, res, next){
-  worker({name:"Send to everyone"});
+  worker({content:"Send to everyone"});
   res.send('respond with a resource');
 })
 
