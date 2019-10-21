@@ -6,6 +6,7 @@ app.controller('myCtrl', function($scope,$http) {
 
 
     var sessionID ="";
+    var channel ="notify"
     $scope.submit=function(){
 
         console.log($scope.firstName);
@@ -23,12 +24,13 @@ app.controller('myCtrl', function($scope,$http) {
       socket.on("connect", function () {
         sessionID = socket.id;//CPjCHB6HGFg8r5zDAAAA this is same with the socket.id one on server.
         console.log(sessionID);//
+
         //Listen to room "new message_"
-        socket.on('new message_', function (data) {
+        socket.on(channel, function (data) {
             console.log('[Node to room:] ' + data);
         });
         // Listen to event on channel "new message_[sessionID]"
-        socket.on('new message_' + sessionID, function (data) {
+        socket.on(channel+ sessionID, function (data) {
             console.log('[Node to me only:] ' + data);
         });
     })
